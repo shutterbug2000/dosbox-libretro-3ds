@@ -1,0 +1,29 @@
+libretro wrapper for DOSBox
+
+* To use you can either load an exe/com/bat file or a *.conf file.
+* If loading exe/com/bat the system directory will be searched for a 'dosbox.conf' file to load. If one isn't available default values will be used. This mode is equivalent to running a DOSBox binary with the specified file as the command line argument.
+* If loading a conf file DOSBox will be loaded with the options in the config file. This mode is useful if you just want to be dumped at a command prompt, but can also be used to load a game by putting commands in the autoexec section.
+* To be useful the frontend will need to have keyboard+mouse support, and all keyboard shortcuts need to be remapped.
+
+Unsupported features:
+
+* Physical CD-ROMs, CD images are supported.
+* The key mapper, key remapping does not work.
+
+TODO:
+
+* Explore more modern options for MIDI synth. Fluidsynth past 1.0.9 needs glib which isn't easy to build in non-standard build environments.
+* Joysticks need more testing. Flightsticks types are not implemented yet.
+
+Building:
+
+* To enable MIDI you must have fluidsynth 1.09 available. Add WANT_FLUIDSYNTH=1 to the end of the make command.
+* You must edit include/config.h to set options for build platform, the supplied version is for 64-bit OSX with latest xcode and clang.
+* Build with the command 'make -f Makefile.libretro'
+  
+Notes:
+
+* There seems to be no trivial way to have the DOSBox core return periodically, so libco is used to enter/exit the emulator loop. This actually works better than one would expect.
+* There is no serialization support, it's not supported by DOSBox.
+* DOSBox uses 'wall time' for timing, frontend fast forward and slow motion features will have no effect.
+* To use MIDI an SF2 soundfont must be specified in the midi->midiconfig option in the config file.
